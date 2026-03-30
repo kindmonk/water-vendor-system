@@ -12,7 +12,7 @@
   }
   body { font-family:'Segoe UI',sans-serif; background:#F1F5F9; }
 
-  /* Nav */
+  
   nav { background:var(--dark); color:var(--white);
         display:flex; align-items:center; justify-content:space-between;
         padding:1rem 2rem; }
@@ -25,12 +25,11 @@
   .badge { background:var(--mint); color:var(--dark); border-radius:50%;
            padding:.1rem .45rem; font-size:.75rem; font-weight:800; }
 
-  /* Layout */
+ 
   .container { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
   h1 { font-size:1.6rem; color:var(--dark); margin-bottom:.3rem; }
   .subtitle { color:var(--gray); margin-bottom:2rem; font-size:.95rem; }
 
-  /* Stats */
   .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
            gap:1rem; margin-bottom:2rem; }
   .stat-card { background:var(--white); border-radius:12px; padding:1.2rem 1.5rem;
@@ -38,13 +37,12 @@
   .stat-card .num { font-size:2rem; font-weight:800; color:var(--blue); }
   .stat-card .lbl { font-size:.85rem; color:var(--gray); margin-top:.2rem; }
 
-  /* Cards / sections */
   .card { background:var(--white); border-radius:14px; padding:1.8rem;
           box-shadow:0 2px 10px rgba(0,0,0,.07); margin-bottom:2rem; }
   .card h2 { font-size:1.1rem; color:var(--dark); margin-bottom:1.2rem;
              border-bottom:2px solid var(--light); padding-bottom:.6rem; }
 
-  /* Order form */
+ 
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .form-group { margin-bottom:1rem; }
   label { display:block; font-size:.83rem; font-weight:600;
@@ -58,14 +56,14 @@
   .btn-primary { background:var(--blue); color:var(--white); }
   .btn-primary:hover { background:var(--teal); }
 
-  /* Orders table */
+  
   table { width:100%; border-collapse:collapse; font-size:.9rem; }
   th { background:var(--light); color:var(--gray); font-weight:700;
        padding:.7rem 1rem; text-align:left; }
   td { padding:.7rem 1rem; border-bottom:1px solid #F1F5F9; color:var(--dark); }
   tr:last-child td { border:none; }
 
-  /* Status pills */
+
   .pill { display:inline-block; padding:.25rem .7rem; border-radius:20px;
           font-size:.8rem; font-weight:700; }
   .pill-pending    { background:#FEF9C3; color:#713F12; }
@@ -105,20 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $orders = getCustomerOrders($user['user_id']);
 
-// Stats
+
 $totalOrders   = count($orders);
 $delivered     = count(array_filter($orders, fn($o) => $o['status'] === 'delivered'));
 $pending       = count(array_filter($orders, fn($o) => $o['status'] === 'pending'));
 $totalSpent    = array_sum(array_column(
     array_filter($orders, fn($o) => $o['status'] === 'delivered'), 'total_amount'));
 
-// Vendors for dropdown
+
 $db = getDB();
 $vendors = $db->query("SELECT v.vendor_id, v.business_name, v.price_per_litre,
                                v.min_order_litres, v.service_area
                         FROM vendors v WHERE v.is_available=1")->fetchAll();
 
-// Unread notifications
 $notifs = $db->prepare("SELECT * FROM notifications WHERE user_id=? AND is_read=0 ORDER BY created_at DESC LIMIT 5");
 $notifs->execute([$user['user_id']]);
 $notifications = $notifs->fetchAll();
@@ -149,7 +146,7 @@ $db->prepare("UPDATE notifications SET is_read=1 WHERE user_id=?")->execute([$us
   </div>
   <?php endif; ?>
 
-  <!-- Stats -->
+  
   <div class="stats">
     <div class="stat-card"><div class="num"><?= $totalOrders ?></div><div class="lbl">Total Orders</div></div>
     <div class="stat-card"><div class="num"><?= $delivered ?></div><div class="lbl">Delivered</div></div>
@@ -157,7 +154,7 @@ $db->prepare("UPDATE notifications SET is_read=1 WHERE user_id=?")->execute([$us
     <div class="stat-card"><div class="num">KES <?= number_format($totalSpent,2) ?></div><div class="lbl">Total Spent</div></div>
   </div>
 
-  <!-- Place Order -->
+ 
   <div class="card">
     <h2>📦 Place a New Order</h2>
     <?php if($msg): ?><div class="msg-success"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
@@ -199,7 +196,7 @@ $db->prepare("UPDATE notifications SET is_read=1 WHERE user_id=?")->execute([$us
     </form>
   </div>
 
-  <!-- Order History -->
+ 
   <div class="card">
     <h2>📋 My Orders</h2>
     <?php if(empty($orders)): ?>
