@@ -1,13 +1,8 @@
 <?php
-// ============================================================
-//  WVMS - Reports Controller
-// ============================================================
 
 require_once __DIR__ . '/../config/db.php';
 
-/**
- * Sales report: daily, weekly, or monthly
- */
+
 function getSalesReport(string $period = 'monthly', int $vendorId = 0): array {
     $db = getDB();
 
