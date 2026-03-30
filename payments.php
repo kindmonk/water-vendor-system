@@ -1,14 +1,10 @@
 <?php
-// ============================================================
-//  WVMS - Payments Controller
-// ============================================================
+
 
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/orders.php';
 
-/**
- * Record / confirm a payment
- */
+
 function confirmPayment(int $orderId, string $method, ?string $mpesaCode, int $recordedBy): array {
     $db = getDB();
 
@@ -24,7 +20,6 @@ function confirmPayment(int $orderId, string $method, ?string $mpesaCode, int $r
         return ['success' => false, 'message' => 'Payment already confirmed.'];
     }
 
-    // Validate M-Pesa code if method is mpesa
     if ($method === 'mpesa' && empty($mpesaCode)) {
         return ['success' => false, 'message' => 'M-Pesa transaction code is required.'];
     }
@@ -37,7 +32,7 @@ function confirmPayment(int $orderId, string $method, ?string $mpesaCode, int $r
     );
     $stmt->execute([$method, $mpesaCode, $recordedBy, $orderId]);
 
-    // Fetch order customer for notification
+    
     $order = getOrderById($orderId);
     if ($order) {
         notifyUser($order['customer_id'],
@@ -48,9 +43,7 @@ function confirmPayment(int $orderId, string $method, ?string $mpesaCode, int $r
     return ['success' => true, 'message' => 'Payment confirmed successfully.'];
 }
 
-/**
- * Get payment summary for a vendor
- */
+
 function getVendorPaymentSummary(int $vendorId): array {
     $db = getDB();
     $stmt = $db->prepare(
