@@ -34,7 +34,7 @@
   .feature-list li::before { content:'✓'; color:var(--mint);
                               font-weight:800; font-size:1.1rem; }
 
-  /* ── Right panel (forms) ── */
+  /* ── Right panel  ── */
   .panel-right {
     flex:1; display:flex; align-items:center; justify-content:center; padding:2rem;
   }
