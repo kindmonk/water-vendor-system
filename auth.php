@@ -1,7 +1,4 @@
 <?php
-// ============================================================
-//  WVMS - Authentication Helper
-// ============================================================
 
 require_once __DIR__ . '/../config/db.php';
 
@@ -62,7 +59,7 @@ function login(string $phone, string $password): array {
 function register(array $data): array {
     $db = getDB();
 
-    // Check if phone already exists
+    
     $stmt = $db->prepare("SELECT user_id FROM users WHERE phone = ?");
     $stmt->execute([$data['phone']]);
     if ($stmt->fetch()) {
